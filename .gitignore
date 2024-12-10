@@ -1,3 +1,6 @@
 .git
+.DS_Store
+
 node_modules
-private.wxd2f16468474f61b8.key
+bin
+bin/**
