@@ -10,7 +10,7 @@
     "dev": "tsc && npm link"
   },
   "bin": {
-    "ak": "./bin/index.ts"
+    "ak": "./bin/index.js"
   },
   "author": "moyum",
   "license": "ISC",
