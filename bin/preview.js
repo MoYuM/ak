@@ -35,7 +35,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 import path from "node:path";
-import local from "./local";
+import local from "./load";
 import open from "open";
 import log from "./utils/log";
 import { getDirPath, safeRequire } from "./utils";
@@ -93,7 +93,7 @@ export default (function (version) { return __awaiter(void 0, void 0, void 0, fu
                 return [3 /*break*/, 6];
             case 4: 
             // 没指定就用本地的代码
-            return [4 /*yield*/, local()];
+            return [4 /*yield*/, local(version)];
             case 5:
                 // 没指定就用本地的代码
                 _c.sent();

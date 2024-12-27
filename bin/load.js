@@ -41,26 +41,14 @@ import { getDirPath } from "./utils";
 import { cp } from "fs/promises";
 import { getAkConfig } from "./utils/config";
 import log from "./utils/log";
-export default (function () { return __awaiter(void 0, void 0, void 0, function () {
-    var curPath, akConfig, packageJson, miniprogramPath, buildCommand, distPath, name, projectPath, miniprogramDist, pages, task;
+var copyBuildToMp = function (akConfig, packageJson) { return __awaiter(void 0, void 0, void 0, function () {
+    var buildCommand, miniprogramPath, distPath, name, curPath, projectPath, miniprogramDist, pages, task;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
-                curPath = cwd();
-                akConfig = getAkConfig();
-                packageJson = require(path.join(cwd(), "package.json"));
-                if (!akConfig) {
-                    log.error("没有找到 ak.config.json");
-                    return [2 /*return*/];
-                }
-                ;
-                if (!packageJson) {
-                    log.error("没有找到 package.json");
-                    return [2 /*return*/];
-                }
-                ;
-                miniprogramPath = akConfig.miniprogramPath, buildCommand = akConfig.buildCommand, distPath = akConfig.distPath;
+                buildCommand = akConfig.buildCommand, miniprogramPath = akConfig.miniprogramPath, distPath = akConfig.distPath;
                 name = packageJson.name;
+                curPath = cwd();
                 projectPath = path.resolve(curPath, miniprogramPath);
                 miniprogramDist = path.join(curPath, distPath);
                 // 构建 npm 包
@@ -76,6 +64,75 @@ export default (function () { return __awaiter(void 0, void 0, void 0, function 
                 return [4 /*yield*/, Promise.all(task).catch(function (e) { return console.error(e); })];
             case 1:
                 _a.sent();
+                return [2 /*return*/];
+        }
+    });
+}); };
+var updateNpmAndBuild = function (akConfig, packageJson, version) { return __awaiter(void 0, void 0, void 0, function () {
+    var miniprogramPath, privateKeyPath, name, projectConfigPath, appid, ci, project, pages, _i, pages_1, path_1, command;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0:
+                miniprogramPath = akConfig.miniprogramPath, privateKeyPath = akConfig.privateKeyPath;
+                name = packageJson.name;
+                projectConfigPath = path.join(miniprogramPath, "project.config.json");
+                appid = require(projectConfigPath).appid;
+                ci = require('miniprogram-ci');
+                project = new ci.Project({
+                    projectPath: miniprogramPath,
+                    type: 'miniProgram',
+                    privateKeyPath: privateKeyPath,
+                    appid: appid,
+                });
+                pages = getDirPath(miniprogramPath, name);
+                for (_i = 0, pages_1 = pages; _i < pages_1.length; _i++) {
+                    path_1 = pages_1[_i];
+                    command = "cd ".concat(path_1, " && npm install ").concat(name, "@").concat(version);
+                    // if (config.npmRegister) {
+                    //   command += ` --registry ${config.npmRegister}`
+                    // }
+                    execSync(command);
+                }
+                // 在有需要的时候构建npm
+                return [4 /*yield*/, ci.packNpm(project, {
+                        reporter: function (infos) {
+                            log.info(JSON.stringify(infos, null, 2));
+                        }
+                    })];
+            case 1:
+                // 在有需要的时候构建npm
+                _a.sent();
+                return [2 /*return*/];
+        }
+    });
+}); };
+export default (function (version) { return __awaiter(void 0, void 0, void 0, function () {
+    var akConfig, packageJson;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0:
+                akConfig = getAkConfig();
+                packageJson = require(path.join(cwd(), "package.json"));
+                if (!akConfig) {
+                    log.error("没有找到 ak.config.json");
+                    return [2 /*return*/];
+                }
+                ;
+                if (!packageJson) {
+                    log.error("没有找到 package.json");
+                    return [2 /*return*/];
+                }
+                ;
+                if (!version) return [3 /*break*/, 2];
+                return [4 /*yield*/, updateNpmAndBuild(akConfig, packageJson, version)];
+            case 1:
+                _a.sent();
+                return [3 /*break*/, 4];
+            case 2: return [4 /*yield*/, copyBuildToMp(akConfig, packageJson)];
+            case 3:
+                _a.sent();
+                _a.label = 4;
+            case 4:
                 log.success("🔫 装填成功！");
                 process.exit();
                 return [2 /*return*/];
