@@ -1,5 +1,5 @@
 import path from "node:path";
-import local from "./local";
+import local from "./load";
 import open from "open";
 import log from "./utils/log";
 import { getDirPath, safeRequire } from "./utils";
@@ -64,7 +64,7 @@ export default async (version: string) => {
     log.info(warning)
   } else {
     // 没指定就用本地的代码
-    await local();
+    await local(version);
   }
 
 
