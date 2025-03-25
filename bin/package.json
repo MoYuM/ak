@@ -1,6 +1,6 @@
 {
     "name": "wx-ak",
-    "version": "1.1.1",
+    "version": "1.1.2",
     "description": "",
     "main": "index.ts",
     "scripts": {
@@ -12,11 +12,12 @@
     "bin": {
         "ak": "./bin/index.js"
     },
+    "type": "module",
     "author": "moyum",
     "license": "ISC",
     "devDependencies": {
         "@tsconfig/recommended": "1.0.8",
-        "@types/node": "22.9.0",
+        "@types/node": "^16.1.0",
         "tsx": "4.19.2",
         "typescript": "5.6.3"
     },
@@ -25,5 +26,8 @@
         "commander": "12.1.0",
         "miniprogram-ci": "2.0.10",
         "open": "10.1.0"
+    },
+    "engines": {
+        "node": ">=16.1.0"
     }
 }

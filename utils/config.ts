@@ -32,10 +32,12 @@ const defaultConfig: Partial<AkConfig> = {
 /**
  * 获取 ak.config.json
  * */
-export function getAkConfig(): AkConfig | null {
+export async function getAkConfig(): Promise<AkConfig | null> {
   let config = null;
+  const configPath = path.join(cwd(), "ak.config.json");
   try {
-    const akConfig = require(path.join(cwd(), "ak.config.json"));
+    const akConfig = await import(configPath);
+    console.log("akConfig", akConfig);
     if (akConfig) {
       config = {
         ...akConfig,

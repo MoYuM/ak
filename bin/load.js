@@ -110,9 +110,12 @@ export default (function (version) { return __awaiter(void 0, void 0, void 0, fu
     var akConfig, packageJson;
     return __generator(this, function (_a) {
         switch (_a.label) {
-            case 0:
-                akConfig = getAkConfig();
-                packageJson = require(path.join(cwd(), "package.json"));
+            case 0: return [4 /*yield*/, getAkConfig()];
+            case 1:
+                akConfig = _a.sent();
+                return [4 /*yield*/, import(path.join(cwd(), "package.json"))];
+            case 2:
+                packageJson = _a.sent();
                 if (!akConfig) {
                     log.error("没有找到 ak.config.json");
                     return [2 /*return*/];
@@ -123,16 +126,16 @@ export default (function (version) { return __awaiter(void 0, void 0, void 0, fu
                     return [2 /*return*/];
                 }
                 ;
-                if (!version) return [3 /*break*/, 2];
+                if (!version) return [3 /*break*/, 4];
                 return [4 /*yield*/, updateNpmAndBuild(akConfig, packageJson, version)];
-            case 1:
-                _a.sent();
-                return [3 /*break*/, 4];
-            case 2: return [4 /*yield*/, copyBuildToMp(akConfig, packageJson)];
             case 3:
                 _a.sent();
-                _a.label = 4;
-            case 4:
+                return [3 /*break*/, 6];
+            case 4: return [4 /*yield*/, copyBuildToMp(akConfig, packageJson)];
+            case 5:
+                _a.sent();
+                _a.label = 6;
+            case 6:
                 log.success("🔫 装填成功！");
                 process.exit();
                 return [2 /*return*/];

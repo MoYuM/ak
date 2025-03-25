@@ -73,8 +73,8 @@ const updateNpmAndBuild = async (akConfig: AkConfig, packageJson: any, version: 
 
 export default async (version: string) => {
 
-  const akConfig = getAkConfig();
-  const packageJson = require(path.join(cwd(), "package.json"));
+  const akConfig = await getAkConfig();
+  const packageJson = await import(path.join(cwd(), "package.json"));
 
   if (!akConfig) {
     log.error("没有找到 ak.config.json")
