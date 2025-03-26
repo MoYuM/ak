@@ -76,8 +76,12 @@ var updateNpmAndBuild = function (akConfig, packageJson, version) { return __awa
                 miniprogramPath = akConfig.miniprogramPath, privateKeyPath = akConfig.privateKeyPath;
                 name = packageJson.name;
                 projectConfigPath = path.join(miniprogramPath, "project.config.json");
-                appid = require(projectConfigPath).appid;
-                ci = require('miniprogram-ci');
+                return [4 /*yield*/, import(projectConfigPath)];
+            case 1:
+                appid = (_a.sent()).appid;
+                return [4 /*yield*/, import('miniprogram-ci')];
+            case 2:
+                ci = _a.sent();
                 project = new ci.Project({
                     projectPath: miniprogramPath,
                     type: 'miniProgram',
@@ -99,7 +103,7 @@ var updateNpmAndBuild = function (akConfig, packageJson, version) { return __awa
                             log.info(JSON.stringify(infos, null, 2));
                         }
                     })];
-            case 1:
+            case 3:
                 // 在有需要的时候构建npm
                 _a.sent();
                 return [2 /*return*/];

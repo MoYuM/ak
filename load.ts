@@ -44,9 +44,9 @@ const updateNpmAndBuild = async (akConfig: AkConfig, packageJson: any, version: 
   const { name } = packageJson;
 
   const projectConfigPath = path.join(miniprogramPath, "project.config.json");
-  const { appid } = require(projectConfigPath);
+  const { appid } = await import(projectConfigPath);
 
-  const ci = require('miniprogram-ci');
+  const ci = await import('miniprogram-ci');
   const project = new ci.Project({
     projectPath: miniprogramPath,
     type: 'miniProgram',
